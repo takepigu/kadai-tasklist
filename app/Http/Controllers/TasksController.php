@@ -49,7 +49,7 @@ class TasksController extends Controller
     {
         //バリデーション
         $request->validate([
-            'status' => 'request|max:10',
+            'status' => 'required|max:10',
             'content' => 'required|max:10',
             ]);
             
