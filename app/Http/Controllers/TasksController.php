@@ -16,11 +16,11 @@ class TasksController extends Controller
     public function index()
     {
         //タスク一覧を取得
-        $Task = Task::all();
+        $tasks = Task::all();
         
         //タスク一覧ビューでそれを表示
         return view('tasks.index',[
-            'tasks' => $Task,
+            'tasks' => $tasks,
             ]);
     }
 
@@ -31,11 +31,11 @@ class TasksController extends Controller
      */
     public function create()
     {
-        $Task = new Task;
+        $task = new Task;
         
         //タスク作成ビューを表示
         return view('tasks.create',[
-            'task' => $Task,
+            'task' => $task,
             ]);
     }
 
@@ -54,10 +54,10 @@ class TasksController extends Controller
             ]);
             
         //タスクを作成
-        $Task = new Task;
-        $Task->status = $request->status;
-        $Task->content = $request->content;
-        $Task->save();
+        $task = new Task;
+        $task->status = $request->status;
+        $task->content = $request->content;
+        $task->save();
         
         //トップページへリダイレクトさせる
         return redirect('/');
@@ -72,11 +72,11 @@ class TasksController extends Controller
     public function show($id)
     {
         //idの値でタスクを検索して取得
-        $Task = Task::findOrFail($id);
+        $task = Task::findOrFail($id);
         
         //タスク詳細ビューでそれを表示
         return view('tasks.show',[
-            'task' => $Task,
+            'task' => $task,
             ]);
         
     }
@@ -90,11 +90,11 @@ class TasksController extends Controller
     public function edit($id)
     {
         //idの値でタスクを検索して取得
-        $Task = Task::findOrFail($id);
+        $task = Task::findOrFail($id);
         
         //タスク編集ビューでそれを表示
         return view('tasks.edit',[
-            'task' => $Task,
+            'task' => $task,
             ]);
     }
 
@@ -115,11 +115,11 @@ class TasksController extends Controller
             ]);
             
         //idの値でタスクを検索して取得
-        $Task = Task::findOrFail($id);
+        $task = Task::findOrFail($id);
         //タスクを更新
-        $Task->status = $request->status;
-        $Task->content = $request->content;
-        $Task->save();
+        $task->status = $request->status;
+        $task->content = $request->content;
+        $task->save();
         
         //トップページへリダイレクトさせる
         return redirect('/');
@@ -134,9 +134,9 @@ class TasksController extends Controller
     public function destroy($id)
     {
         //idの値でタスクを検索して取得
-        $Task = Task::findOrFail($id);
+        $task = Task::findOrFail($id);
         //タスクを削除
-        $Task->delete();
+        $task->delete();
         
         //トップページへリダイレクトさせる
         return redirect('/');
