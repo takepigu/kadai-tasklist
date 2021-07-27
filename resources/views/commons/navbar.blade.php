@@ -15,8 +15,7 @@
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->name }}</a>
                         <ul class="dropdown-menu deopdown-menu-right">
-                            {{--タスク詳細ページへのリンク --}}
-                            <li class="dropdown-item"><a href="#">My profile</a></li>
+                            
                             <li class="dropdown-divider"></li>
                             {{--ログアウトへのリンク --}}
                             <li class="dropdown-item">{!! link_to_route('logout.get','Logout') !!}</li>
@@ -27,6 +26,7 @@
                 
                 {{--ログインページへのリンク --}}
                 <li class="nav-item">{!! link_to_route('login', 'Login', [], ['class' => 'nav-link']) !!}</li>
+                <li class="nav-item">{!! link_to_route('signup','signup',[],['class' => 'nav-link']) !!}</li>
                 @endif
             </ul>
         </div>

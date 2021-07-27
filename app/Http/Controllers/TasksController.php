@@ -28,13 +28,12 @@ class TasksController extends Controller
                 'tasks' => $tasks,
                 ];
         }
-        //タスク一覧を取得
-        $tasks = Task::all();
+        
         
         //タスク一覧ビューでそれを表示
         return view('tasks.index',[
             'tasks' => $tasks,
-            ],$data);
+            ]);
     }
 
     /**
