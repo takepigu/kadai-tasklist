@@ -14,8 +14,9 @@ class AlterTasksTable extends Migration
     public function up()
     {
         Schema::table('tasks', function (Blueprint $table) {
-             $table->foreign('user_id')->references('id')->on('users');
+             
             $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
         
         });
     }
@@ -28,8 +29,9 @@ class AlterTasksTable extends Migration
     public function down()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->dropForeign('tasks_user_id_foreign');
+            
             $table->dropIfExist('user_id');
+            $table->dropForeign('tasks_user_id_foreign');
         });
     }
 }
