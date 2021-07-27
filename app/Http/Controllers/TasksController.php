@@ -32,7 +32,7 @@ class TasksController extends Controller
         
         //タスク一覧ビューでそれを表示
         return view('tasks.index',[
-            'tasks' => $tasks,
+            'data' =$data,
             ]);
     }
 
