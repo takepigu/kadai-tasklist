@@ -17,21 +17,17 @@ class TasksController extends Controller
     {
         $data =[];
         if (\Auth::check()) { //認証済みの場合
-        //認証済みユーザーを取得
-        $user = \Auth::user();
-            //ユーザーの投稿の一覧を作成日時の降順で取得
-            //後のChapterで他ユーザーの投稿も取得するように変更しましたが、現時点ではこのユーザーの投稿のみ取得します）
-            $tasks = $user->tasks()->orderBy('created_at','desc')->paginate(10);
+            
             
             $data = [
-                'user' => $user,
                 'tasks' => $tasks,
-                ];
+            ];
+            //タスク一覧ビューでそれを表示
+            return view('tasks.index',$data);
         }
-        
-        
-        //タスク一覧ビューでそれを表示
-        return view('tasks.index',$data);
+        else {
+            return view('welcome');
+        }
     }
 
     /**
@@ -63,7 +59,7 @@ class TasksController extends Controller
             'content' => 'required',
             ]);
             
-            // 認証済みユーザ（閲覧者）の投稿として作成（リクエストされた値をもとに作成）
+        // 認証済みユーザ（閲覧者）の投稿として作成（リクエストされた値をもとに作成）
         $request->user()->tasks()->create([
             'content' => $request->content,
             'status' => $request->status,
@@ -83,14 +79,25 @@ class TasksController extends Controller
     public function show($id)
     {
         //idの値でタスクを検索して取得
-        $task = Task::findOrFail($id);
-        
-        //タスク詳細ビューでそれを表示
+        $task = \App\Task::findOrFail($id);
+
+        // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、投稿を削除
+        if (\Auth::id() === $task->user_id) {
+           //タスク詳細ビューでそれを表示
         return view('tasks.show',[
             'task' => $task,
-            ]);
+        ]);
+        }
         
+        
+        //トップページへリダイレクトさせる
+        return redirect('/');
     }
+        
+        
+        
+        
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -100,14 +107,24 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
-        //idの値でタスクを検索して取得
-        $task = Task::findOrFail($id);
-        
-        //タスク編集ビューでそれを表示
+        //タスク詳細ビューでそれを表示
+        $task = \App\Task::findOrFail($id);
+
+        // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、投稿を削除
+        if (\Auth::id() === $task->user_id) {
+          //タスク編集ビューでそれを表示
         return view('tasks.edit',[
             'task' => $task,
-            ]);
+        ]);
+        }
+        
+        
+        //トップページへリダイレクトさせる
+        return redirect('/');
     }
+        
+        
+    
 
     /**
      * Update the specified resource in storage.
@@ -127,10 +144,14 @@ class TasksController extends Controller
             
         //idの値でタスクを検索して取得
         $task = Task::findOrFail($id);
-        //タスクを更新
+        // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、投稿を削除
+        if (\Auth::id() === $task->user_id) {
+            //タスクを更新
         $task->status = $request->status;
         $task->content = $request->content;
         $task->save();
+        }
+        
         
         //トップページへリダイレクトさせる
         return redirect('/');
