@@ -17,9 +17,13 @@ class TasksController extends Controller
     {
         $data =[];
         if (\Auth::check()) { //認証済みの場合
+
+            $user = \Auth::user();
             
+            $tasks = $user->tasks()->orderBy('created_at','desc')->paginate(10);
             
             $data = [
+                'user' => $user,
                 'tasks' => $tasks,
             ];
             //タスク一覧ビューでそれを表示
